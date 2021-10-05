@@ -1,82 +1,126 @@
 
-const itemList = document.getElementById('item-list')
 
-//Array carrito
-const cart = []
 
-//--------------------------------------------------------------------------
-//Añade un nuevo articulo al carrito
-function addItem(name, price) {
-    //Recorre el array y si el articulo ya existe le añade 1 a la cantidad
-    for (let i = 0 ; i < cart.length; i += 1) {
-        // Compara el nombre introducido con los nombres de los productos en el carrito
-        if(cart[i].name === name) {
-            cart[i].qty += 1;
-            return
+
+
+	const cart = []
+	var itemList = document.getElementById('item-list')
+	
+
+	//-------------FUNCIONES--------------	
+	// Añade un articulo al carito
+	function addItem(name, price, amount){
+		//Recorre el array
+		for (let i = 0; i < 0; i++) {
+			/*Compara el nombre intruducido con cada nombre en el array
+			si coincide aumenta la cantidad introducida al articulo existente */
+			if (cart[i].name === name) {
+				cart[i].amount += amount
+				console.log(`funciona`)
+				/*sale de la funcion para no ejecutar el codigo a continuacion 
+				y no duplicar el producto*/
+				return true
+			}
+		}
+		let item = new Item (name, price, amount)
+		// Añade objeto item al array
+		cart.push(item)
+	}
+
+	//-----------------------------------
+	//Elimina articulos del carrito
+	function removeItem(name, amount = 0){
+		//Recorre el array
+		for (let i = 0 ; i < cart.length ; i++){
+			//Si el nombre coincide con un articulo resta 1 a la cantidad
+			if (cart[i].name === name) {
+				cart[i].amount -= amount
+				//Si la cantidad es menor que 1 elimina el articulo del array
+				if (cart[i].amount < 1){
+					cart.splice( i , 1)
+				}
+				return
+			}
+		}
+	}
+
+	//-----------------------------------
+	// Muestra la informacion del carrito
+	function showItems(){
+		let totalAmount = getAmount()
+		// Muestra la cantidad de productos en el carrito
+		console.log(`Tiene ${totalAmount} productos en el carrito`)
+		// Muestra cada producto y sus datos
+		
+		
+		
+
+	    for (let i = 0 ; i < cart.length; i += 1) {
+	        console.log(`- ${cart[i].name} ${cart[i].price} € x ${cart[i].amount} = `)
+	        //itemStr = `<li class="item">- ${cart[i].name} ${cart[i].price} € x ${cart[i].qty}</li>`
+	    }
+	    
+
+    	//itemList.innerHTML = itemStr
+		
+		// Muestra el importe total del carrito
+		console.log(`Importe TOTAL ${getTotal()} €`)
+	}
+
+	//-----------------------------------
+	// Devuelve cantiad total de articulos en el carrito 
+	function getAmount(){
+		let amount = 0
+		for (let i = 0 ; i < cart.length ; i += 1) {
+			amount += cart[i].amount
+		}
+		return amount
+	}
+
+	//-----------------------------------
+	// Devuelve iporte total del carrito 
+	function getTotal() {
+        let total = 0
+        for (let i = 0; i < cart.length ; i += 1) {
+          total += cart[i].price * cart[i].amount
         }
-    }
-    // Añade un nuevo articulo al carrito
-    const item = {name, price, qty: 1}
-    cart.push(item)
+        return total.toFixed(2)
+      }
+
+
+class Item {
+	//------------CONSTRUCTOR-------------
+	constructor(name, price, amount){
+		this.name = name
+		this.price = price
+		this.amount = amount
+	}
+
+	//-------------FUNCIONES--------------	
+	// Devuelve el importe total de la linea de articulo
+	getTotal(){
+		// Variable interna
+		let total
+		// Multiplica el precio por la cantidad
+		total += Item.amount * Item.price
+
+		return total
+	}
+
 }
 
-//--------------------------------------------------------------------------
-//Elimina un articulo del carrito
-function removeItem(name, qty = 0) {
-    // Compara el nombre introducido con los nombres de los productos en el carrito
-    for (let i = 0 ; i < cart[i].length ; i += 1) {
-        if (cart[i].name === name) {
-            // Si la cantidad es mayor que cero resta 1 a la cantidad 
-            if (cart[i].qty > 0) {
-                cart[i].qty -= qty
-            }
-            // Si la cantidad es menor que uno elimina el articulo de la lista
-            if (cart[i].qty < 1){
-                cart.splice(i, 1)
-            }
-            return
-        }
-    }
-}
 
-//--------------------------------------------------------------------------
-//Muestra por consola la informacion del carrito
-function showItems(){
-    // Variable interna almacena el valor del acumulado
-    const qty = getQty()
-    // Imprime por consola el total de productos
-    console.log(`Tienes ${qty} productos en tu cesta.`);
-    // Imprime la información de cada producto en la lista del carrito
-    let itemStr = ''
-    for (let i = 0 ; i < cart.length; i += 1) {
-        console.log(`- ${cart[i].name} ${cart[i].price} € x ${cart[i].qty}`)
-        itemStr += `<li class="item">- ${cart[i].name} ${cart[i].price} € x ${cart[i].qty}</li>`
-    }
-    itemList.innerHTML = itemStr
-    // Imprime por consola el importe total del carrito redondeando a 2 decimales.
-    console.log(`Importe total en el carrito:  ${getTotal()} €`)
-}
+//-------------PRUEBAS--------------
 
-//--------------------------------------------------------------------------
-// Devuelve el acumulado de productos del carrito
-function getQty() {
-    // Variable interna para totalizador de productos
-    let qty = 0
-    // Recorre el array sumandole la cantidad de cada producto a la variable @qty para calcular el total de productos en el carrito.
-    for (let i = 0 ; i < cart.length; i += 1){
-        qty += cart[i].qty
-    }
-    return qty
-}
 
-//--------------------------------------------------------------------------
-// Devuelve el total
-function getTotal() {
-    // Variable interna acumulador de importe.
-    let total = 0
-    // Recorre el array multiplicando el precio por la cantidad y lo suma al acumulador.
-    for (let i = 0 ; i < cart.length; i += 1) {
-        total += cart[i].price * cart[i].qty
-    }
-    return total.toFixed(2)
-}
+addItem(`Zapatillas`, 20.19,1)
+addItem(`Calcetines`, 1.99,1)
+
+addItem(`Calcetines`, 1.99,1)
+addItem(`Calcetines`, 1.99,1)
+addItem(`Calcetines`, 1.99,1)
+addItem(`Pantalon`, 12.10,1)
+
+showItems()
+
+
