@@ -2,7 +2,6 @@
 
 
 
-
 	const cart = []
 	var itemList = document.getElementById('item-list')
 	
@@ -11,12 +10,11 @@
 	// Añade un articulo al carito
 	function addItem(name, price, amount){
 		//Recorre el array
-		for (let i = 0; i < 0; i++) {
+		for (let i = 0; i < cart.length; i++) {
 			/*Compara el nombre intruducido con cada nombre en el array
 			si coincide aumenta la cantidad introducida al articulo existente */
 			if (cart[i].name === name) {
 				cart[i].amount += amount
-				console.log(`funciona`)
 				/*sale de la funcion para no ejecutar el codigo a continuacion 
 				y no duplicar el producto*/
 				return true
@@ -56,7 +54,8 @@
 		
 
 	    for (let i = 0 ; i < cart.length; i += 1) {
-	        console.log(`- ${cart[i].name} ${cart[i].price} € x ${cart[i].amount} = `)
+	        let totalPrice = cart[i].getTotal(i)
+	        console.log(`- ${cart[i].name} ${cart[i].price} € x ${cart[i].amount} = ${totalPrice}`)
 	        //itemStr = `<li class="item">- ${cart[i].name} ${cart[i].price} € x ${cart[i].qty}</li>`
 	    }
 	    
@@ -98,11 +97,11 @@ class Item {
 
 	//-------------FUNCIONES--------------	
 	// Devuelve el importe total de la linea de articulo
-	getTotal(){
+	getTotal(i){
 		// Variable interna
-		let total
+		let total = 0
 		// Multiplica el precio por la cantidad
-		total += Item.amount * Item.price
+		total += cart[i].amount * cart[i].price
 
 		return total
 	}
@@ -122,5 +121,4 @@ addItem(`Calcetines`, 1.99,1)
 addItem(`Pantalon`, 12.10,1)
 
 showItems()
-
 
