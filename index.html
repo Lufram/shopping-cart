@@ -13,16 +13,18 @@
    
 	<!-- Menu principal -->
 	<div class="nav-container">
-		<nav class="main-nav">
-			<ul>
-				<li><a href="#">Home</a></li>
-				<li><a href="#">Noticias</a></li>
-				<li><a href="#">Nosotros</a></li>
-				<li><a href="#">Publicaciones</a></li>
-				<li><a href="#">Cursos</a></li>
-				<li><a href="#">Localización</a></li>
-				<li><a href="#">Contacto</a></li>
+		<nav class="main-nav navbar dark">
+			<div class="navbar-collapse">
+			<ul class="navbar-nav">
+				<li class="nav-item active"><a href="#" class="nav-link">Home</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Chorradas</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">No lo necesitas</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Gasta tu pasta</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Timos</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Cosas con gatitos</a></li>
+				<li class="nav-item"><a href="#" class="nav-link">Contacto</a></li>
 			</ul>
+			<div>
 		</nav>  
 	</div>
 
@@ -31,12 +33,17 @@
 	
 		<form>
 			<div class="form-add-item form-container">
-				<label for="item-name">Nombre del articulo: </label>
-				<input type="text" name="item-name" id="item-name"><br>
-				<label for="item-price">Precio del artículo: </label>
-				<input type="text" name="item-price" id="item-price"><br>
-				<label for="item-qty">Unidades: </label>
-				<input type="text" name="item-qty" id="item-qty"><br>
+				<label for="item-name">Nombre del articulo:
+					<input type="text" name="item-name" id="item-name">
+				</label><br>
+				
+				<label for="item-price">Precio del artículo: 
+					<input type="number" step="0.01" name="item-price" id="item-price">
+				</label><br>
+
+				<label for="item-qty">Unidades: 
+					<input type="number" step="1" name="item-qty" id="item-qty">
+				</label><br>
 				
 				<button type="submit">Añadir al carrito</button>
 			</div>
@@ -83,14 +90,21 @@
 
 	<!-- Footer -->
 	<footer class="main-footer">
-        <div class=" footer-container">
-            <nav class="footer-nav">
-                <a href="#">Home</a>
-                <a href="#">Nosotros</a>
-                <a href="#">Cursos</a>
-                <a href="#">Contacto</a>
+        <div class="container footer-container">
+            <nav class="footer-nav navbar light">
+            	<div class="navbar-collapse">
+            		<ul class="navbar-nav alig-left">
+            			<li class="nav-item active"><a href="#" class="nav-link">Home</a></li>
+               			<li class="nav-item"><a href="#" class="nav-link">Productos</a></li>
+                		<li class="nav-item"><a href="#" class="nav-link">Reclamaciones</a></li>
+                		<li class="nav-item"><a href="#" class="nav-link">Contacto</a></li>
+            		</ul>
+            		<div class="nav-subitem alig-right">
+            			<p class="copyright">Todos los Derechos Reservados 2021 &copy;</p>
+            		</div>
+                
+                </div>
             </nav>
-            <p class="copyright">Todos los Derechos Reservados 2021 &copy;</p>
         </div>
  	</footer>
 
