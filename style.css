@@ -1,6 +1,7 @@
 *{
 font-family: Helvetica, sans-serif;
 box-sizing: border-box;
+margin: 0;
 }
 
 header{
@@ -22,7 +23,12 @@ body {
     text-align: left;
     background-color: #fff;
 }
-
+main {
+    max-width: 80rem;
+    height: auto;
+    margin: auto;
+    margin-bottom: 15px;
+}
 label, input, select,button {
     margin: 5px;
 }
@@ -50,15 +56,9 @@ li{
     margin-right: auto;
 }
 
-.form-container {
-    background-color: burlywood;
-    width: 25%;
-    padding: 20px;
-    margin: 10px;
-
-}
-
 .navbar {
+    max-width: 80rem;
+    margin: auto;
     margin-bottom: 20px;
     position: relative;
     flex-wrap:  flex;
@@ -89,4 +89,27 @@ li{
     padding: .5rem 1rem;
     text-decoration: none;
     background-color: transparent;
+}
+
+.copyright {
+    font-size: 0.8rem;
+}
+
+.display {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    grid-template-rows: 2fr 1fr 1fr 1fr;
+}
+
+.form-container {
+    border-radius: 0.5em;
+    min-width: 200px;
+    padding: 50px 20px;
+    margin: 10px;
+
+}
+
+.form-cart{
+    grid-column: 2;
+    grid-row: 1/5;
 }
