@@ -29,19 +29,22 @@
 	
 		<form class="display">
 			<div class="form-add-item form-container light">
-				<label for="item-name">Nombre del articulo:
-					<input type="text" name="item-name" id="item-name">
-				</label><br>
+				<label for="item-name" class="form-label">Nombre del articulo:
+					<input type="text" name="item-name" id="item-name" class="form-control">
+				</label>
 				<br>
-				<label for="item-price">Precio del artículo: 
-					<input type="number" step="0.01" name="item-price" id="item-price">
-				</label><br>
 				<br>
-				<label for="item-qty">Unidades: 
-					<input type="number" step="1" name="item-qty" id="item-qty">
-				</label><br>
+				<label for="item-price" class="form-label">Precio del artículo: 
+					<input type="number" step="0.01" name="item-price" id="item-price" class="form-control">
+				</label>
 				<br>
-				<button type="submit">Añadir al carrito</button>
+				<br>
+				<label for="item-qty" class="form-label">Unidades: 
+					<input type="number" step="1" name="item-qty" id="item-qty" class="form-control">
+				</label>
+				<br>
+				<br>
+				<button type="submit" class="btn btn-primary">Añadir al carrito</button>
 			</div>
 
 			<div class="form-cart form-container light">
@@ -62,7 +65,7 @@
 
 			
 			<div class="form-payment-select form-container light">
-				<label for="item-name">Forma de pago</label><br>
+				<label for="item-name" class="form-label">Forma de pago</label><br>
 				<br>
 				<select class="custom-select custom-select-lg mb-3">
 					<option selected>Elija una forma de pago</option>
@@ -76,11 +79,12 @@
 			</div>
 
 			<div class="form-check form-container light">
-				<input class="form-check-input" type="checkbox" value="1" id="defaultCheck1">
-				<label class="form-check-label" for="defaultCheck1">Acepto las condiciones de compra </label><br>
+				<input class="form-check-input form-control" type="checkbox" value="1" id="defaultCheck1">
+				<label class="form-check-label form-label" for="defaultCheck1">Acepto las condiciones de compra </label>
 				<br>
-				<button type="submit">Imprimir</button>
-				<button type="submit">Restablecer</button>
+				<br>
+				<button type="submit" class="btn btn-primary">Imprimir</button>
+				<button type="submit" class="btn btn-primary">Restablecer</button>
 			</div>
 
 		</form>
