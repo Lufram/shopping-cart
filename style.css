@@ -31,11 +31,14 @@ main {
 }
 label, input, select,button {
     margin: 5px;
+    font-family: inherit;
 }
 
 li{
     display: list-item;
 }
+
+/* COMUNES */
 
 .dark {
     color: #fff;
@@ -55,6 +58,8 @@ li{
 .alig-left {
     margin-right: auto;
 }
+
+/* NAV */
 
 .navbar {
     max-width: 80rem;
@@ -91,9 +96,13 @@ li{
     background-color: transparent;
 }
 
+/* FOOTER */
+
 .copyright {
     font-size: 0.8rem;
 }
+
+/* FORM */
 
 .display {
     display: grid;
@@ -112,4 +121,37 @@ li{
 .form-cart{
     grid-column: 2;
     grid-row: 1/5;
+}
+
+.btn {
+    color: #fff;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    user-select: none;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    transition: 
+        color .15s ease-in-out,
+        background-color .15s ease-in-out,
+        border-color .15s ease-in-out,
+        box-shadow .15s ease-in-out;
+}
+
+.btn-primary {
+
+    color: #fff;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+
+}
+
+.btn-primary:active {
+    background-color: #0a58ca;
+    border-color: #0a53be;
+
 }
