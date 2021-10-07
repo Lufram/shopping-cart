@@ -4,19 +4,10 @@ box-sizing: border-box;
 margin: 0;
 }
 
-header{
-    background-color: rgb(63, 60, 60);
-    text-align: center;
-    color:· fff;
-    padding: 0.2em;
-    font-size: 2em;
-
-}
-
 body {
     margin: 0;
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-    font-size: 1rem;
+    font-family: Helvetica, sans-serif;
+    font-size: 1.2rem;
     font-weight: 400;
     line-height: 1.5;
     color: #212529;
@@ -31,14 +22,16 @@ main {
 }
 label, input, select,button {
     margin: 5px;
-    font-family: inherit;
+}
+
+label {
+    display: inline-block;
+    cursor: default;
 }
 
 li{
     display: list-item;
 }
-
-/* COMUNES */
 
 .dark {
     color: #fff;
@@ -46,7 +39,7 @@ li{
 }
 
 .light {
-    color: rgba(0,0,0,.9);
+    color: #212529;
     background-color: #f8f9fa;
 }
 
@@ -58,8 +51,6 @@ li{
 .alig-left {
     margin-right: auto;
 }
-
-/* NAV */
 
 .navbar {
     max-width: 80rem;
@@ -96,13 +87,9 @@ li{
     background-color: transparent;
 }
 
-/* FOOTER */
-
 .copyright {
     font-size: 0.8rem;
 }
-
-/* FORM */
 
 .display {
     display: grid;
@@ -112,15 +99,69 @@ li{
 
 .form-container {
     border-radius: 0.5em;
+    border: solid #dee2e6;
+    border-width: 1px;
     min-width: 200px;
     padding: 50px 20px;
     margin: 10px;
 
 }
 
+.mb-3 {
+    margin-bottom: 1rem;
+    display: flex;
+}
+
 .form-cart{
     grid-column: 2;
     grid-row: 1/5;
+}
+
+.form-label{
+    margin-bottom: 0.5em;
+}
+
+.form-control {
+    display: block;
+    width: 100%;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    appearance: none;
+    border-radius: .25rem;
+}
+
+.input-group-text{
+    display: flex;
+    align-items: center;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: center;
+    white-space: nowrap;
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+}
+
+.input-group>.form-control{
+    position: relative;
+    flex: 1 1 auto;
+    width: 1%;
+    min-width: 0;
+}
+
+.input-group>:not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
+    margin-left: -1px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
 .btn {
