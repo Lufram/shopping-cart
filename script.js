@@ -4,6 +4,8 @@
 
 	const cart = []
 	var itemList = document.getElementById('item-list')
+	var itemListText = document.getElementById('item-list-text-container')
+	var itemListTotal = document.getElementById('cart-total-import')
 	
 
 	//-------------FUNCIONES--------------	
@@ -37,33 +39,58 @@
 				if (cart[i].amount < 1){
 					cart.splice( i , 1)
 				}
+				showItems()
 				return
 			}
 		}
+
+		showItems()
 	}
 
 	//-----------------------------------
 	// Muestra la informacion del carrito
 	function showItems(){
 		let totalAmount = getAmount()
+		let itemStr = ``
+		let cartStr = ``
+		let cartTotalImport = ``
+		
 		// Muestra la cantidad de productos en el carrito
 		console.log(`Tiene ${totalAmount} productos en el carrito`)
+		cartStr = `<p class="cart-amount"> Tiene ${totalAmount} productos en el carrito</p>`
+		
+	
 		// Muestra cada producto y sus datos
-		
-		
-		
-
 	    for (let i = 0 ; i < cart.length; i += 1) {
 	        let totalPrice = cart[i].getTotal(i)
 	        console.log(`- ${cart[i].name} ${cart[i].price} € x ${cart[i].amount} = ${totalPrice}`)
-	        //itemStr = `<li class="item">- ${cart[i].name} ${cart[i].price} € x ${cart[i].qty}</li>`
+	        itemStr = `<tr class="item">
+					    	<th scope="row"> ${i} </th>
+					    	<td> ${cart[i].name} </td>
+					    	<td> ${cart[i].price} € </td>
+					    	<td> ${cart[i].amount} </td>
+					    	<td> ${totalPrice} </td>
+					    	<td>
+					    		<button>+</button>
+					    		<button>-</button>
+					    		<button>eliminar</button>
+					    	</td>
+					     </tr>`
+					     
+			itemList.innerHTML = itemStr
 	    }
-	    
 
-    	//itemList.innerHTML = itemStr
-		
+
 		// Muestra el importe total del carrito
 		console.log(`Importe TOTAL ${getTotal()} €`)
+	    
+	    cartTotalImport = `Importe TOTAL ${getTotal()} €`
+
+    	
+    	itemListText.innerHTML = cartStr
+    	itemListTotal.innerHTML = cartTotalImport
+
+		
 	}
 
 	//-----------------------------------
