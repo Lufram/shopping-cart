@@ -50,36 +50,47 @@
 	//-----------------------------------
 	// Muestra la informacion del carrito
 	function showItems(){
+		
 		let totalAmount = getAmount()
 		let itemStr = ``
 		let cartStr = ``
 		let cartTotalImport = ``
 		
-		// Muestra la cantidad de productos en el carrito
-		console.log(`Tiene ${totalAmount} productos en el carrito`)
-		cartStr = `<p class="cart-amount"> Tiene ${totalAmount} productos en el carrito</p>`
-		
-	
-		// Muestra cada producto y sus datos
-	    for (let i = 0 ; i < cart.length; i += 1) {
-	        let totalPrice = cart[i].getTotal(i)
-	        console.log(`- ${cart[i].name} ${cart[i].price} € x ${cart[i].amount} = ${totalPrice}`)
-	        itemStr = `<tr class="item">
-					    	<th scope="row"> ${i} </th>
-					    	<td> ${cart[i].name} </td>
-					    	<td> ${cart[i].price} € </td>
-					    	<td> ${cart[i].amount} </td>
-					    	<td> ${totalPrice} </td>
-					    	<td>
-					    		<button>+</button>
-					    		<button>-</button>
-					    		<button>eliminar</button>
-					    	</td>
-					     </tr>`
-					     
-			itemList.innerHTML = itemStr
-	    }
+		if (cart.length < 1){
+			itemStr =
+			`<div class="cart-empty">
+					<p class="cart-amount empty"> *  No tienes ningun artículo en el carrito, añada algún producto ...</p>
+					<div class="cart-empty-img-container">
+						<img class="cart-empty-img" src="_img/cart_empty.svg">
+					</div>
+			</div>`
+		}else{
 
+			// Muestra la cantidad de productos en el carrito
+			console.log(`Tiene ${totalAmount} productos en el carrito`)
+			cartStr = `<p class="cart-amount"> Tiene ${totalAmount} productos en el carrito</p>`
+			
+		
+			// Muestra cada producto y sus datos
+		    for (let i = 0 ; i < cart.length; i += 1) {
+		        let totalPrice = cart[i].getTotal(i)
+		        console.log(`- ${cart[i].name} ${cart[i].price} € x ${cart[i].amount} = ${totalPrice}`)
+		        itemStr += `<tr class="item">
+						    	<th scope="row"> ${i} </th>
+						    	<td> ${cart[i].name} </td>
+						    	<td> ${cart[i].price} € </td>
+						    	<td> ${cart[i].amount} </td>
+						    	<td> ${totalPrice} </td>
+						    	<td>
+						    		<button>+</button>
+						    		<button>-</button>
+						    		<button>eliminar</button>
+						    	</td>
+						     </tr>`
+
+				itemList.innerHTML = itemStr
+		    }
+		}
 
 		// Muestra el importe total del carrito
 		console.log(`Importe TOTAL ${getTotal()} €`)
