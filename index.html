@@ -28,6 +28,7 @@
 	<main class="main-body">
 	
 		<form class="display">
+
 			<div class="form-add-item form-container">
 				<label for="item-name" class="form-label">Nombre del articulo</label>
 				<div class="mb-3">
@@ -43,30 +44,67 @@
 					<label for="item-qty" class="form-label">Unidades </label>
 					<input type="number" step="1" name="item-qty" id="item-qty" class="form-control">
 				</div>
+				<br>
+				<br>
 				<button type="submit" class="btn btn-primary">Añadir al carrito</button>
 			</div>
 
 			<div class="form-cart form-container">
-				<div>
-					<p class="cart-amount empty">No tienes ningun artículo en el carrito, añada algún producto</p>
-					<img class="" src="">
 
+				<!-- CARRITO VACIO
+
+				<div class="cart-empty">
+					<p class="cart-amount empty"> *  No tienes ningun artículo en el carrito, añada algún producto ...</p>
+					<div class="cart-empty-img-container">
+						<img class="cart-empty-img" src="_img/cart_empty.svg">
+					</div>
 				</div>
 
-				<ul id="item-list">
-					<!-- Articulos del carrito -->
-				</ul>
+				-->
 
-				<div>
-					<!-- Total importe acumulado -->
-				</div>
+				<!-- CARRITO LLENO -->
+				<table class="table" id="item-list">
+
+					<div class="item-list-text-container">
+						<p class="cart-amount"> Tiene 2 productos en el carrito</p>
+					</div>
+
+					<thead>
+						<tr class="thead-dark">
+		      				<th scope="col">#</th>
+		      				<th scope="col">Articulo</th>
+						    <th scope="col">Cantidad</th>
+						    <th scope="col">Precio</th>
+						    <th scope="col">Subtotal</th>
+						    <th scope="col"></th>
+		    			</tr>
+					</thead>
+					  <tbody>
+					    <tr class="item">
+					    	<th scope="row">1</th>
+					    	<td>Zapatillas</td>
+					    	<td>2</td>
+					    	<td>1,10 €</td>
+					    	<td>2,20 €</td>
+					    	<td class="btm-table-container">
+					    		<button>+</button>
+					    		<button>-</button>
+					    		<button>eliminar</button>
+					    	</td>
+					    </tr>
+					    <tr class="cart-total-import" id="cart-total-import">
+					   		<td colspan="5"> Importe total 2,20 €</td>
+					    </tr>
+  					</tbody>
+  				</table>
+
 			</div>
 
 			
 			<div class="form-payment-select form-container">
 				<label for="item-name" class="form-label">Forma de pago</label><br>
 				<br>
-				<select class="custom-select custom-select-lg mb-3">
+				<select class="form-select mb-3">
 					<option selected>Elija una forma de pago</option>
 					<option value="1">Efectivo</option>
 					<option value="2">Tarjeta de credito</option>
