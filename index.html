@@ -3,7 +3,7 @@
 <head>
 	<title>Aliexples</title>
 	<link rel="stylesheet" href="style.css">
-	<script src="script.js"></script>
+	
 </head>
 <body>
   
@@ -27,9 +27,9 @@
 	<!-- Principal -->
 	<main class="main-body">
 	
-		<form class="display">
+		<div class="display">
 
-			<div class="form-add-item form-container">
+			<form class="form-add-item form-container" id="add-form">
 				<label for="item-name" class="form-label">Nombre del articulo</label>
 				<div class="mb-3">
 					<input type="text" name="item-name" id="item-name" class="form-control">
@@ -41,53 +41,21 @@
 					<span class="input-group-text">€</span>
 				</div>
 				<div class="mb-3">
-					<label for="item-qty" class="form-label">Unidades </label>
-					<input type="number" step="1" name="item-qty" id="item-qty" class="form-control">
+					<label for="item-amount" class="form-label">Unidades </label>
+					<input type="number" step="1" name="item-amount" id="item-amount" class="form-control">
 				</div>
 				<br>
 				<br>
 				<button type="submit" class="btn btn-primary">Añadir al carrito</button>
-			</div>
+			</form>
 
-			<div class="form-cart form-container">
+			<div class="form-cart form-container" id="item-list">
 
 
 				<!-- CARRITO LLENO -->
-				<table class="table" id="item-list">
+				
 
-					<div class="item-list-text-container">
-						<p class="cart-amount"> Tiene 2 productos en el carrito</p>
-					</div>
-
-					<thead>
-						<tr class="thead-dark">
-		      				<th scope="col">#</th>
-		      				<th scope="col">Articulo</th>
-						    <th scope="col">Cantidad</th>
-						    <th scope="col">Precio</th>
-						    <th scope="col">Subtotal</th>
-						    <th scope="col"></th>
-		    			</tr>
-					</thead>
-					  <tbody>
-					    <tr class="item">
-					    	<th scope="row">1</th>
-					    	<td>Zapatillas</td>
-					    	<td>2</td>
-					    	<td>1,10 €</td>
-					    	<td>2,20 €</td>
-					    	<td class="btm-table-container">
-					    		<button>+</button>
-					    		<button>-</button>
-					    		<button>eliminar</button>
-					    	</td>
-					    </tr>
-					    <tr class="cart-total-import" id="cart-total-import">
-					   		<td colspan="5"> Importe total 2,20 €</td>
-					    </tr>
-  					</tbody>
-  				</table>
-
+				
 			</div>
 
 			
@@ -115,7 +83,7 @@
 			</div>
 
 			
-		</form>
+		</div>
 
 
 	
@@ -141,7 +109,7 @@
             </nav>
         </div>
  	</footer>
-
+	 <script src="script.js"></script>
 </body>
 
 </html>
