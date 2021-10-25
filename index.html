@@ -40,14 +40,14 @@
 				<!-- Precio del producto -->
 				<label for="item-price" class="form-label">Precio del artículo </label>
 				<div class="input-group mb-3">
-					<input type="number" step="0.01" name="item-price" id="itemPrice" class="form-control">
+					<input type="number" step="0.01" name="item-price" id="itemPrice" class="form-control" >
 					<span class="input-group-text">€</span>
 				</div>
 
 				<!-- Cantidad de producto -->
 				<div class="mb-3">
 					<label for="item-amount" class="form-label">Unidades </label>
-					<input type="number" step="1" name="item-amount" id="itemAmount" class="form-control">
+					<input type="number" step="1" name="item-amount" id="itemAmount" class="form-control" value="1" min="1">
 				</div>
 				<br>
 				<br>
@@ -66,25 +66,26 @@
 			<div class="form-payment-select form-container">
 				<label for="item-name" class="form-label">Forma de pago</label><br>
 				<br>
-				<select class="form-select mb-3">
-					<option selected>Elija una forma de pago</option>
+				<select class="form-select mb-3" id="formSelect">
+					<option value="0">Elija una forma de pago</option>
 					<option value="1">Efectivo</option>
 					<option value="2">Tarjeta de credito</option>
 				  </select>
 			</div>
 
 			<!-- FORMULARIO FORMA PAGO -->
-			<form class="form-payment form-container">
-
+			<form class="form-payment form-container" id="payForm">
+				
+			
 			</form>
 
 			<!-- CONDICIONES DE COMPRA -->
-			<form class="form-check form-container">
+			<form class="form-check form-container" id="formCheckBox">
 				<input class="form-check-input" type="checkbox" value="1" id="defaultCheck1">
 				<label class="form-check-label form-label" for="defaultCheck1">Acepto las condiciones de compra </label>
 				<br>
 				<br>
-				<button type="submit" class="btn btn-primary">Imprimir</button>
+				<button type="submit" class="btn btn-primary" id="btnPrint"  >Imprimir</button>
 				<button type="submit" class="btn btn-primary">Restablecer</button>
 			</form>
 
