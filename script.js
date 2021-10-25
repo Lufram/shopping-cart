@@ -1,25 +1,44 @@
 
 
+	// Al cargar la pagina inicializa las variables y muestra el carrito
+	window.addEventListener("load", () =>{
+		initValues();
+		showItems()
+		itemName.addEvent("input", () => ){
+			if(){
+				
+			}
+		}
 
-
+	});
 	
-	const itemList = document.getElementById("item-list");
-	const addForm = document.getElementById("add-form");
-	const itemName = document.getElementById("item-name");
-	const itemPrice = document.getElementById("item-price");
-	const itemAmount = document.getElementById("item-amount");
-	const cart = []
-	//-------------BOTONES--------------
 
+	// Inicializa las variables que necesarias para el script
+	function initValues(){
+		const itemList = document.getElementById("itemList");
+		const addForm = document.getElementById("addForm");
+		const itemName = document.getElementById("itemName");
+		const itemPrice = document.getElementById("itemPrice");
+		const itemAmount = document.getElementById("itemAmount");
+		const cart = [];
+	}
+
+
+	//-------------BOTONES--------------
+	// Funcionalidad de botones de la tabla para añadir o quitar productos
 	itemList.onclick = function (e) {
+
+		// Elimina la linea de la tabla
 		if (e.target && e.target.classList.contains('remove')) {
 			const name = e.target.dataset.name
 			removeItem(name, -1)
 		}
+		// Aumenta en 1 la cantidad de esa linea de producto
 		else if (e.target && e.target.classList.contains('add-one')) {
 			const name = e.target.dataset.name
 			addItem(name, 1)
 		}
+		// Reduce en 1 la cantidad de esa linea de producto
 		else if (e.target && e.target.classList.contains('remove-one')) {
 			const name = e.target.dataset.name
 			removeItem(name,1)
@@ -27,13 +46,13 @@
 	}
 
 
-
+	// Funcionalidad de boton añadir producto
 	addForm.onsubmit = function (e) {
 
-		e.preventDefault()
-		const name = itemName.value
-		const price = itemPrice.value
-		const amount = itemAmount.value
+		e.preventDefault();
+		const name = itemName.value;
+		const price = itemPrice.value;
+		const amount = itemAmount.value;
 		addItem(name, price, amount)
 	}
 
@@ -41,22 +60,23 @@
 	//-------------FUNCIONES--------------	
 	// Añade un articulo al carito
 	function addItem(name, amount, price){
-		//Recorre el array
+		// Recorre el array
 		for (let i = 0; i < cart.length; i++) {
-			/*Compara el nombre intruducido con cada nombre en el array
+			/* Compara el nombre intruducido con cada nombre en el array
 			si coincide aumenta la cantidad introducida al articulo existente */
 			if (cart[i].name === name) {
 				cart[i].amount =  parseFloat(cart[i].amount) +  parseFloat(amount)
-				/*sale de la funcion para no ejecutar el codigo a continuacion 
-				y no duplicar el producto*/
+				/* Sale de la funcion para no ejecutar el codigo a continuacion 
+				y no duplicar el producto */
 				showItems()
 				return true
 			}
 		}
-		let item = new Item (name, price, amount)
+		let item = new Item (name, price, amount);
 		// Añade objeto item al array
-		cart.push(item)
+		cart.push(item);
 		showItems()
+
 	}
 
 	//-----------------------------------
@@ -66,7 +86,7 @@
 		for (let i = 0 ; i < cart.length ; i++){
 			//Si el nombre coincide con un articulo resta 1 a la cantidad
 			if (cart[i].name === name) {
-				cart[i].amount -= amount
+				cart[i].amount =  parseFloat(cart[i].amount) -  parseFloat(amount)
 				//Si la cantidad es menor que 1 elimina el articulo del array
 				if (cart[i].amount < 1 || amount === -1){
 					cart.splice( i , 1)
@@ -75,7 +95,6 @@
 				return
 			}
 		}
-
 		showItems()
 	}
 
@@ -83,9 +102,11 @@
 	// Muestra la informacion del carrito
 	function showItems(){
 		
+		// Genera el total de articulos actual
 		let totalAmount = getAmount()
+		// Variable donde concatenar todo el codigo html que insertaremos
 		let itemStr = ``
-		
+		// En caso de que el carrito este vacio mostramos una imagen y un texto
 		if (cart.length < 1){
 			itemStr =
 			`<div class="cart-empty">
@@ -142,26 +163,43 @@
 			itemStr += `</tbody>
 						</table>`
 		}
-
-	    
-
-		itemList.innerHTML = itemStr
-
-		
+		// Inserta el String en el html
+		itemList.innerHTML = itemStr;
+		// Focus en el nombre del articulo del formulario
+		itemName.focus()
+		// Resetea el formulario
+		addForm.reset()
 	}
+
+
+	//-----------------------------------
+	// Validacion de formulario 
+	function validateForm() {
+	  if (itemName.value.length > 0) {
+	  	if(itemPrice.value.length > 0){
+	  		if(itemAmount.value.length == 0){
+
+	  		alert("La cantidad no puede ser 0");
+	  	}
+
+	    alert("El nombre no puede estar vacio");
+	    return false;
+	  }
+	}
+
 
 	//-----------------------------------
 	// Devuelve cantiad total de articulos en el carrito 
 	function getAmount(){
 		let amount = 0
 		for (let i = 0 ; i < cart.length ; i += 1) {
-			amount += cart[i].amount
+			amount += parseFloat(cart[i].amount)
 		}
 		return amount
 	}
 
 	//-----------------------------------
-	// Devuelve iporte total del carrito 
+	// Devuelve importe total del carrito 
 	function getTotal() {
         let total = 0
         for (let i = 0; i < cart.length ; i += 1) {
@@ -170,6 +208,7 @@
         return total.toFixed(2)
       }
 
+   
 
 class Item {
 	//------------CONSTRUCTOR-------------
@@ -195,15 +234,19 @@ class Item {
 
 //-------------PRUEBAS--------------
 
+
+
+/* 
+
 showItems()
 
+addItem(`Zapatillas`, 20.19,1)
+addItem(`Calcetines`, 1.99,1)
+addItem(`Calcetines`, 1.99,1)
+addItem(`Calcetines`, 1.99,1)
+addItem(`Calcetines`, 1.99,1)
+addItem(`Pantalon`, 12.10,1) 
 
-/* addItem(`Zapatillas`, 20.19,1)
-addItem(`Calcetines`, 1.99,1)
-
-addItem(`Calcetines`, 1.99,1)
-addItem(`Calcetines`, 1.99,1)
-addItem(`Calcetines`, 1.99,1)
-addItem(`Pantalon`, 12.10,1) */
+*/
 
 
