@@ -106,7 +106,7 @@ table {
 .display {
     display: grid;
     grid-template-columns: 1fr 2fr;
-    grid-template-rows: 2fr 1fr 1fr 1fr;
+    /*grid-template-rows: 2fr 1fr 1fr 1fr;*/
 }
 
 .form-container {
@@ -210,6 +210,10 @@ table {
     background-color: #0d6efd;
     border-color: #0d6efd;
 
+}
+.btn-primary:disabled {
+    background-color: #87888a;
+    border-color: #3f4041;
 }
 
 .btn-primary:active, .btn-primary:hover {
