@@ -181,6 +181,19 @@ table {
     border-bottom-left-radius: 0;
 }
 
+.input-error{
+    font-size: 12px;
+    margin-bottom: 0;
+    display: none;
+}
+
+.input-error-active{
+    display: block;
+}
+
+.form-incorrect{
+    border: 3px solid #bb2929;
+}
 
 /*----------BOTONES-------------*/
 
