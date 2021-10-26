@@ -6,10 +6,11 @@
 	const itemPrice = document.getElementById("itemPrice");
 	const itemAmount = document.getElementById("itemAmount");
 	const payForm = document.getElementById("payForm");
+	var payment = "unselect";
 	const formSelect = document.getElementById("formSelect");
 	const formCheckBox = document.getElementById("defaultCheck1");
 	const btnPrint  = document.getElementById("btnPrint");
-	const inputs = document.querySelectorAll("form-control");
+	const inputs = document.getElementsByClassName("form-control");
 	const cart = [];
 	
 
@@ -18,6 +19,10 @@
 	window.addEventListener("load", () => {
 		showItems()
 		btnPrint.disabled = true;
+		for (let i = 0 ; i < inputs.length ; i++){
+			inputs[i].addEventListener("keyup", checkForm);
+			inputs[i].addEventListener("blur", checkForm);
+		}
 	});
 	
 
@@ -27,7 +32,7 @@
 	const expresiones = {
 
 		product: /^[a-zA-Z0-9\_\-]{4,16}$/, 
-		price: /^[0-9]{1,3}$/,
+		price: /^\d*(.\d{1})?\d{0,1}$/,
 		amount: /^[0-9]{1,3}$/,
 
 		name: /^[a-zA-Z0-9\_\-]{4,16}$/,
@@ -35,6 +40,8 @@
 		cvv: /^[0-9]{3,4}$/
 
 	}
+
+
 
 	formSelect.addEventListener("click", showPayment);
 
@@ -47,8 +54,10 @@
 
 					if (expresiones.product.test(e.target.value)){
 						document.getElementById("input-item-name").classList.remove("form-incorrect")
+						document.getElementById("itemNameError").style.visibility ='hidden'
 					} else {
 						document.getElementById("input-item-name").classList.add("form-incorrect")
+						document.getElementById("itemNameError").style.visibility ='visible'
 					}
 					break;
 
@@ -73,22 +82,24 @@
 
 	}
 
-	inputs.forEach((input) =>  {
-		input.addEventListener("keyup", checkForm)
-		input.addEventListener("blur", checkForm)
-	});
+	
+		
+
 
 	// Funcionalidad de boton añadir producto
 	addForm.addEventListener("submit", (e) => {
-		e.preventDefault();
-		const name = itemName.value;
-		const price = itemPrice.value;
-		const amount = itemAmount.value;
-		addItem(name, price, amount)
+		if(validateForm() == true)
+		{e.preventDefault();
+			const name = itemName.value;
+			const price = itemPrice.value;
+			const amount = itemAmount.value;
+			addItem(name, price, amount)}else{
+				
+			}
+		
 	});
 
 
-	///^\d+([,.]\d+)?$/
 
 	function validateForm() {
 		if (itemName.value.length = 0) {
@@ -128,6 +139,10 @@
 		}
 	}
 
+	// Funcionalidad de boton imprimir	
+	btnPrint.addEventListener('click', () => {   //ventana emergente al dar boton imprimir
+		alert(showResum());
+	});
 
 	//-------------FUNCIONES--------------	
 	// Añade un articulo al carito
@@ -243,6 +258,45 @@
 		addForm.reset()
 	}
 
+
+	function showResum(){
+		
+		// Variable donde concatenar todo el codigo html que insertaremos
+		let itemStr = ``
+		// En caso de que el carrito este vacio mostramos una imagen y un texto
+		
+			if (cart.length < 1){
+				itemStr =
+				`No tienes ningun artículo en el carrito, añada algún producto ...`
+			}else if (payment =="unselect"){
+			
+					itemStr += `No ha seleccionado ninguna forma de pago.`}
+					else{
+						// Muestra la cantidad de productos en el carrito
+						itemStr += `Los articulos de mi carrito son: \n`
+						// Muestra cada producto y sus datos
+						for (let i = 0 ; i < cart.length; i += 1) {
+							let totalPrice = cart[i].getTotal(i)
+
+							itemStr += `-- ${cart[i].name}`
+						}
+						// Muestra el importe total del carrito
+						itemStr += `\n Importe total ${getTotal()} €`
+
+						switch (payment){
+							case "Efectivo":
+								itemStr += `\nforma de pago Efectivo`
+								break;
+							case "Tarjeta":
+						 		itemStr += `\nforma de pago Tarjeta`
+								break;
+						}
+					}
+				
+		// Inserta el String en el html
+		return itemStr;
+		}
+	
 	//-----------------------------------
 	// Devuelve cantiad total de articulos en el carrito 
 	function getAmount(){
@@ -287,6 +341,7 @@ function showPayment(){
 					<input type="text" name="card-cvv" id="cardCvv" class="form-control">
 				</div>`
 				payForm.innerHTML = itemStr;
+				payment = "Tarjeta"
 				break;
 			case "1":
 				itemStr += 
@@ -296,9 +351,11 @@ function showPayment(){
 					<input type="text" name="cash-amount" id="cash-Amount" class="form-control">
 				</div>`
 				payForm.innerHTML = itemStr;
+				payment = "Efectivo"
 				break;
 			default:
 				itemStr += "<div></div>"
+				payment = "unselect"
 				payForm.innerHTML = itemStr;
 				break;
 		}		  
