@@ -9,6 +9,7 @@
 	const formSelect = document.getElementById("formSelect");
 	const formCheckBox = document.getElementById("defaultCheck1");
 	const btnPrint  = document.getElementById("btnPrint");
+	const inputs = document.querySelectorAll("form-control");
 	const cart = [];
 	
 
@@ -22,6 +23,70 @@
 
 	//-----------------------------------
 	// Validacion de formulario
+
+	const expresiones = {
+
+		product: /^[a-zA-Z0-9\_\-]{4,16}$/, 
+		price: /^[0-9]{1,3}$/,
+		amount: /^[0-9]{1,3}$/,
+
+		name: /^[a-zA-Z0-9\_\-]{4,16}$/,
+		card: /^(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))$/,
+		cvv: /^[0-9]{3,4}$/
+
+	}
+
+	formSelect.addEventListener("click", showPayment);
+
+	formCheckBox.addEventListener("change",checkAcept);
+
+	function checkForm(e){
+		switch (e.target.name) {
+
+			case "item-name" :
+
+					if (expresiones.product.test(e.target.value)){
+						document.getElementById("input-item-name").classList.remove("form-incorrect")
+					} else {
+						document.getElementById("input-item-name").classList.add("form-incorrect")
+					}
+					break;
+
+			case "item-price" :
+
+					if (expresiones.price.test(e.target.value)){
+						document.getElementById("input-item-price").classList.remove("form-incorrect")
+					} else {
+						document.getElementById("input-item-price").classList.add("form-incorrect")
+					}
+					break;
+
+			case "item-amount" : 
+
+					if (expresiones.price.test(e.target.value)){
+						document.getElementById("input-item-amount").classList.remove("form-incorrect")
+					} else {
+						document.getElementById("input-item-amount").classList.add("form-incorrect")
+					}
+					break;
+		}
+
+	}
+
+	inputs.forEach((input) =>  {
+		input.addEventListener("keyup", checkForm)
+		input.addEventListener("blur", checkForm)
+	});
+
+	// Funcionalidad de boton añadir producto
+	addForm.addEventListener("submit", (e) => {
+		e.preventDefault();
+		const name = itemName.value;
+		const price = itemPrice.value;
+		const amount = itemAmount.value;
+		addItem(name, price, amount)
+	});
+
 
 	///^\d+([,.]\d+)?$/
 
@@ -61,21 +126,6 @@
 			const name = e.target.dataset.name
 			removeItem(name,1,1)
 		}
-	}
-
-	formSelect.addEventListener("click", showPayment);
-
-	formCheckBox.addEventListener("change",checkAcept);
-
-
-	// Funcionalidad de boton añadir producto
-	addForm.onsubmit = function (e) {
-
-		e.preventDefault();
-		const name = itemName.value;
-		const price = itemPrice.value;
-		const amount = itemAmount.value;
-		addItem(name, price, amount)
 	}
 
 
