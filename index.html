@@ -33,19 +33,20 @@
 
 				<!-- Nombre del producto -->
 				<label for="item-name" class="form-label">Nombre del articulo</label>
-				<div class="mb-3">
+				<div class="mb-3 input-item-name">
 					<input type="text" name="item-name" id="itemName" class="form-control">
+					<p class="input-error">El nombre debe contener al menos 4 dígitos y no puede incluir símbolos.</p>
 				</div>
 
 				<!-- Precio del producto -->
-				<label for="item-price" class="form-label">Precio del artículo </label>
+				<label for="item-price nput-item-price" class="form-label">Precio del artículo </label>
 				<div class="input-group mb-3">
 					<input type="number" step="0.01" name="item-price" id="itemPrice" class="form-control" >
 					<span class="input-group-text">€</span>
 				</div>
 
 				<!-- Cantidad de producto -->
-				<div class="mb-3">
+				<div class="mb-3 nput-item-amount">
 					<label for="item-amount" class="form-label">Unidades </label>
 					<input type="number" step="1" name="item-amount" id="itemAmount" class="form-control" value="1" min="1">
 				</div>
