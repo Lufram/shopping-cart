@@ -16,6 +16,7 @@
 
 	const btnAddForm = document.getElementById("btnAddForm");
 	const btnPrint  = document.getElementById("btnPrint");
+	const btnRestart  = document.getElementById("btnRestart");
 	const cart = [];
 	
 
@@ -84,7 +85,7 @@
 		if (flag1 == false || flag2 == false) {
 			flag = false;
 		}
-		
+
 		return flag
 	  }
 
@@ -137,6 +138,10 @@
 		alert(showResum());
 	});
 
+	//-----------------------------------
+	// Funcionalidad de boton imprimir	
+	btnRestart.addEventListener('click', restartAll);
+
 	//-------------FUNCIONES--------------	
 
 	// Añade un articulo al carito
@@ -177,6 +182,12 @@
 			}
 		}
 		showItems()
+	}
+
+	//-----------------------------------
+	//Resetea los formularios y el carrito
+	function restartAll(){
+
 	}
 
 	//-----------------------------------
