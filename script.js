@@ -5,44 +5,112 @@
 	const itemName = document.getElementById("itemName");
 	const itemPrice = document.getElementById("itemPrice");
 	const itemAmount = document.getElementById("itemAmount");
+
 	const payForm = document.getElementById("payForm");
+	var payment = "unselect";
+
 	const formSelect = document.getElementById("formSelect");
 	const formCheckBox = document.getElementById("defaultCheck1");
+	const nameError = document.getElementById("itemNameError")
+	const priceError = document.getElementById("itemPriceError")
+
+	const btnAddForm = document.getElementById("btnAddForm");
 	const btnPrint  = document.getElementById("btnPrint");
 	const cart = [];
 	
 
 
-	// Al cargar la pagina inicializa las variables y muestra el carrito
+
 	window.addEventListener("load", () => {
 		showItems()
 		btnPrint.disabled = true;
+		
 	});
 	
+	
+	formSelect.addEventListener("click", showPayment);
+	formCheckBox.addEventListener("change",checkAcept);
+
 
 	//-----------------------------------
 	// Validacion de formulario
 
-	///^\d+([,.]\d+)?$/
+	const expresiones = {
+
+		product: /^[a-zA-Z0-9\_\-]{4,16}$/, 
+		price: /^\d*(.\d{1})?\d{0,1}$/,
+		amount: /^[0-9]{1,3}$/,
+
+		name: /^[a-zA-Z0-9\_\-]{4,16}$/,
+		card: /^(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))$/,
+		cvv: /^[0-9]{3,4}$/
+
+	}
 
 	function validateForm() {
-		if (itemName.value.length = 0) {
-			alert("El nombre no puede estar vacio");
-			return false;
-		}else if(itemPrice.value.length > 0){
-			alert("El precio no puede estar vacio");
-			return false;
-		}else if(itemAmount.value.length == 0){
-			alert("La cantidad no puede ser 0");
-			return false;
-		} else {
-			return true;
+		let flag = true;
+		let flag1 = true;
+		let flag2 = true;
+
+
+		if (itemName.value.length == 0) {
+			nameError.innerHTML = `<p>El nombre no puede estar vacio</p>`
+			document.getElementById("inputItemName").classList.add("form-incorrect")
+			flag1 = false;
+		}else if(!expresiones.product.test(itemName.value)){
+			nameError.innerHTML = `<p>El nombre no puede contener simbolos</p>`
+			document.getElementById("inputItemName").classList.add("form-incorrect")
+			flag1 = false;
+		}else{ 
+			nameError.innerHTML = `<p> </p>`
+			document.getElementById("inputItemName").classList.remove("form-incorrect")
+			flag1 = true;
 		}
+
+		if (itemPrice.value.length == 0) {
+			priceError.innerHTML = `<p>El precio no puede estar vacio</p>`
+			document.getElementById("inputItemPrice").classList.add("form-incorrect")
+			flag2 = false;
+		}else if(!expresiones.price.test(itemPrice.value)){
+			priceError.innerHTML = `<p>Formato de precio erroneo</p>`
+			document.getElementById("inputItemPrice").classList.add("form-incorrect")
+			flag2 = false;
+		}else{ 
+			priceError.innerHTML = `<p> </p>`
+			document.getElementById("inputItemPrice").classList.remove("form-incorrect")
+			flag2 = true;
+		}
+
+		if (flag1 == false || flag2 == false) {
+			flag = false;
+		}
+		
+		return flag
 	  }
 
 
 
 	//-------------BOTONES--------------
+
+	//-----------------------------------
+	// Funcionalidad de boton añadir producto
+	btnAddForm.addEventListener("click", (e) => {
+		let flag = true;
+		flag = validateForm();
+		if( flag == true){
+			e.preventDefault();
+			const name = itemName.value;
+			const price = itemPrice.value;
+			const amount = itemAmount.value;
+			addItem(name, price, amount)
+		}else{
+			console.log("error")
+			return false;	
+		}
+		
+	});
+
+	//-----------------------------------
 	// Funcionalidad de botones de la tabla para añadir o quitar productos
 	itemList.onclick = function (e) {
 
@@ -62,24 +130,15 @@
 			removeItem(name,1,1)
 		}
 	}
-
-	formSelect.addEventListener("click", showPayment);
-
-	formCheckBox.addEventListener("change",checkAcept);
-
-
-	// Funcionalidad de boton añadir producto
-	addForm.onsubmit = function (e) {
-
-		e.preventDefault();
-		const name = itemName.value;
-		const price = itemPrice.value;
-		const amount = itemAmount.value;
-		addItem(name, price, amount)
-	}
-
+	
+	//-----------------------------------
+	// Funcionalidad de boton imprimir	
+	btnPrint.addEventListener('click', () => {   //ventana emergente al dar boton imprimir
+		alert(showResum());
+	});
 
 	//-------------FUNCIONES--------------	
+
 	// Añade un articulo al carito
 	function addItem(name, price, amount){
 		// Recorre el array
@@ -194,6 +253,44 @@
 	}
 
 	//-----------------------------------
+	// Muestra los productos en el carrito el precio total y la forma de pago
+	function showResum(){
+		// Variable donde concatenar todo el codigo html que insertaremos
+		let itemStr = ``
+		// En caso de que el carrito este vacio mostramos una imagen y un texto
+			if (cart.length < 1){
+				itemStr =
+				`No tienes ningun artículo en el carrito, añada algún producto ...`
+			}else if (payment =="unselect"){
+			
+					itemStr += `No ha seleccionado ninguna forma de pago.`}
+					else{
+						// Muestra la cantidad de productos en el carrito
+						itemStr += `Los articulos de mi carrito son: \n`
+						// Muestra cada producto y sus datos
+						for (let i = 0 ; i < cart.length; i += 1) {
+							let totalPrice = cart[i].getTotal(i)
+
+							itemStr += `-- ${cart[i].name}`
+						}
+						// Muestra el importe total del carrito
+						itemStr += `\n Importe total ${getTotal()} €`
+
+						switch (payment){
+							case "Efectivo":
+								itemStr += `\nforma de pago Efectivo`
+								break;
+							case "Tarjeta":
+						 		itemStr += `\nforma de pago Tarjeta`
+								break;
+						}
+					}
+				
+		// Inserta el String en el html
+		return itemStr;
+		}
+	
+	//-----------------------------------
 	// Devuelve cantiad total de articulos en el carrito 
 	function getAmount(){
 		let amount = 0
@@ -213,61 +310,68 @@
         return total.toFixed(2)
       }
 
-function showPayment(){
-	
-	let itemStr = ``;
-		switch(formSelect.value){
-			case "2":
-				itemStr += 
-				`<!-- Titular de la tarjeta -->
-				<label for="card-name" class="form-label">Titular de la tarjeta</label>
-				<div class="mb-3">
-					<input type="text" name="card-name" id="cardName" class="form-control">
-				</div>
+	//-----------------------------------
+	// Muestra el formulario de la forma de pago seleccionada
+	function showPayment(){
+		
+		let itemStr = ``;
+			switch(formSelect.value){
+				case "1":
+					itemStr += 
+					`<!-- Importe efectivo -->
+					<label for="cash-amount" class="form-label">Importe efectivo</label>
+					<div class="mb-3">
+						<input type="text" name="cash-amount" id="cash-Amount" class="form-control">
+					</div>`
+					payForm.innerHTML = itemStr;
+					payment = "Efectivo"
+					break;
+				case "2":
+					itemStr += 
+					`<!-- Titular de la tarjeta -->
+					<label for="card-name" class="form-label">Titular de la tarjeta</label>
+					<div class="mb-3">
+						<input type="text" name="card-name" id="cardName" class="form-control">
+					</div>
 
-				<!-- Numero de tarjeta -->
-				<label for="card-num" class="form-label">Numero de tarjeta </label>
-				<div class="input-group mb-3">
-					<input type="text" name="card-num" id="cardNum" class="form-control">
-				</div>
+					<!-- Numero de tarjeta -->
+					<label for="card-num" class="form-label">Numero de tarjeta </label>
+					<div class="input-group mb-3">
+						<input type="text" name="card-num" id="cardNum" class="form-control">
+					</div>
 
-				<!-- CVV -->
-				<label for="card-cvv" class="form-label">CVV </label>
-				<div class="input-group mb-3">
-					<input type="text" name="card-cvv" id="cardCvv" class="form-control">
-				</div>`
-				payForm.innerHTML = itemStr;
-				break;
-			case "1":
-				itemStr += 
-				`<!-- Importe efectivo -->
-				<label for="cash-amount" class="form-label">Importe efectivo</label>
-				<div class="mb-3">
-					<input type="text" name="cash-amount" id="cash-Amount" class="form-control">
-				</div>`
-				payForm.innerHTML = itemStr;
-				break;
-			default:
-				itemStr += "<div></div>"
-				payForm.innerHTML = itemStr;
-				break;
-		}		  
-}
-
-//-----------------------------------
-// Comprueba si el check box esta activado
-function checkAcept(){
-	// Si esta activado activa el boton de imprimir
-	if(formCheckBox.checked){
-		btnPrint.disabled = false;
-	} 
-	// En caso contrario lo desactiva
-	else {
-		btnPrint.disabled = true;
+					<!-- CVV -->
+					<label for="card-cvv" class="form-label">CVV </label>
+					<div class="input-group mb-3">
+						<input type="text" name="card-cvv" id="cardCvv" class="form-control">
+					</div>`
+					payForm.innerHTML = itemStr;
+					payment = "Tarjeta"
+					break;
+				default:
+					itemStr += "<div></div>"
+					payment = "unselect"
+					payForm.innerHTML = itemStr;
+					break;
+			}		  
 	}
 
-}
+	//-----------------------------------
+	// Comprueba si el check box esta activado
+	function checkAcept(){
+		// Si esta activado activa el boton de imprimir
+		if(formCheckBox.checked){
+			btnPrint.disabled = false;
+		} 
+		// En caso contrario lo desactiva
+		else {
+			btnPrint.disabled = true;
+		}
 
+	}
+
+//------------CONSTRUCTOR-------------
+// Clase Item que utilizaremos para almacenar la informacion de cada linea de producto
 class Item {
 	//------------CONSTRUCTOR-------------
 	constructor(name, price, amount){
@@ -288,23 +392,4 @@ class Item {
 	}
 
 }
-
-
-//-------------PRUEBAS--------------
-
-
-
-/* 
-
-showItems()
-
-addItem(`Zapatillas`, 20.19,1)
-addItem(`Calcetines`, 1.99,1)
-addItem(`Calcetines`, 1.99,1)
-addItem(`Calcetines`, 1.99,1)
-addItem(`Calcetines`, 1.99,1)
-addItem(`Pantalon`, 12.10,1) 
-
-*/
-
 
