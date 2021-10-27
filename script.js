@@ -57,15 +57,7 @@
 		//-----------------------------------
 		// Funcionalidad de boton imprimir	
 		btnPrint.addEventListener('click', () => {   //ventana emergente al dar boton imprimir
-
-			let flag = true;
-			flag = validateCardForm();
-			if( flag == true){
-				alert(showResum());
-			}else{
-				console.log("error")
-				return false;	
-			}
+			alert(showResum());
 		});
 
 		//-----------------------------------
@@ -390,31 +382,6 @@
 
 		return flag
 	  }
-
-	  /*
-	  function validateCardForm() {
-		let flag = true;
-		if (formSelect.value == "2"){
-			if (document.getElementById("cardName").value.length == 0) {
-				nameError.innerHTML = `<p>El nombre no puede estar vacio</p>`
-				document.getElementById("inputItemName").classList.add("form-incorrect")
-				flag1 = false;
-			}else if(!expresiones.name.test(document.getElementById("cardName").value)){
-				nameError.innerHTML = `<p>Nombre inapropiado</p>`
-				document.getElementById("inputItemName").classList.add("form-incorrect")
-				flag1 = false;
-			}else{ 
-				nameError.innerHTML = `<p> </p>`
-				document.getElementById("inputItemName").classList.remove("form-incorrect")
-				flag1 = true;
-			}
-		}else{
-			flag = true;
-		}
-
-		return flag
-	  }
-	*/
 
 	//-----------------------------------
 	// Comprueba si el check box esta activado
