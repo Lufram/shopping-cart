@@ -12,6 +12,7 @@
 	const formSelect = document.getElementById("formSelect");
 	const formCheckBox = document.getElementById("defaultCheck1");
 	const nameError = document.getElementById("itemNameError")
+	const priceError = document.getElementById("itemPriceError")
 
 	const btnAddForm = document.getElementById("btnAddForm");
 	const btnPrint  = document.getElementById("btnPrint");
@@ -19,12 +20,13 @@
 	
 
 
-	// Al cargar la pagina inicializa las variables y muestra el carrito
+
 	window.addEventListener("load", () => {
 		showItems()
 		btnPrint.disabled = true;
 		
 	});
+	
 	
 	formSelect.addEventListener("click", showPayment);
 	formCheckBox.addEventListener("change",checkAcept);
@@ -46,17 +48,38 @@
 	}
 
 	function validateForm() {
+		let flag = true
+
 		if (itemName.value.length == 0) {
 			nameError.innerHTML = `<p>El nombre no puede estar vacio</p>`
-			document.getElementById("input-item-name").classList.add("form-incorrect")
-			return false;
-		}else if(expresiones.product.test(!itemName.value)){
+			document.getElementById("inputItemName").classList.add("form-incorrect")
+			flag = false;
+		}else if(!expresiones.product.test(itemName.value)){
 			nameError.innerHTML = `<p>El nombre no puede contener simbolos</p>`
-			document.getElementById("input-item-name").classList.add("form-incorrect")
-			return false;
+			document.getElementById("inputItemName").classList.add("form-incorrect")
+			flag = false;
 		}else{ 
-			return true;
+			nameError.innerHTML = `<p> </p>`
+			document.getElementById("inputItemName").classList.remove("form-incorrect")
+			flag = true;
 		}
+
+		if (itemPrice.value.length == 0) {
+			priceError.innerHTML = `<p>El precio no puede ser 0</p>`
+			document.getElementById("inputItemPrice").classList.add("form-incorrect")
+			flag = false;
+		}else if(!expresiones.price.test(itemPrice.value)){
+			priceError.innerHTML = `<p>El nombre no puede contener simbolos</p>`
+			document.getElementById("inputItemPrice").classList.add("form-incorrect")
+			flag = false;
+		}else{ 
+			priceError.innerHTML = `<p> </p>`
+			document.getElementById("inputItemPrice").classList.remove("form-incorrect")
+			flag = true;
+		}
+
+
+		return flag
 	  }
 
 
@@ -287,6 +310,16 @@
 		
 		let itemStr = ``;
 			switch(formSelect.value){
+				case "1":
+					itemStr += 
+					`<!-- Importe efectivo -->
+					<label for="cash-amount" class="form-label">Importe efectivo</label>
+					<div class="mb-3">
+						<input type="text" name="cash-amount" id="cash-Amount" class="form-control">
+					</div>`
+					payForm.innerHTML = itemStr;
+					payment = "Efectivo"
+					break;
 				case "2":
 					itemStr += 
 					`<!-- Titular de la tarjeta -->
@@ -308,16 +341,6 @@
 					</div>`
 					payForm.innerHTML = itemStr;
 					payment = "Tarjeta"
-					break;
-				case "1":
-					itemStr += 
-					`<!-- Importe efectivo -->
-					<label for="cash-amount" class="form-label">Importe efectivo</label>
-					<div class="mb-3">
-						<input type="text" name="cash-amount" id="cash-Amount" class="form-control">
-					</div>`
-					payForm.innerHTML = itemStr;
-					payment = "Efectivo"
 					break;
 				default:
 					itemStr += "<div></div>"
@@ -341,6 +364,8 @@
 
 	}
 
+//------------CONSTRUCTOR-------------
+// Clase Item que utilizaremos para almacenar la informacion de cada linea de producto
 class Item {
 	//------------CONSTRUCTOR-------------
 	constructor(name, price, amount){
@@ -361,5 +386,4 @@ class Item {
 	}
 
 }
-
 
