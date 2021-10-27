@@ -187,7 +187,7 @@
 	//-----------------------------------
 	//Resetea los formularios y el carrito
 	function restartAll(){
-
+		console.log("borrado todo");
 	}
 
 	//-----------------------------------
