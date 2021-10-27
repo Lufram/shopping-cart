@@ -1,180 +1,118 @@
-
-	// Inicializa las variables que necesarias para el script
-	const itemList = document.getElementById("itemList");
-	const addForm = document.getElementById("addForm");
-	const itemName = document.getElementById("itemName");
-	const itemPrice = document.getElementById("itemPrice");
-	const itemAmount = document.getElementById("itemAmount");
-
-	const payForm = document.getElementById("payForm");
-	const formPayment = document.getElementById("formPayment");
-	var payment = "unselect";
-
-	const formSelect = document.getElementById("formSelect");
-	const formCheckBox = document.getElementById("defaultCheck1");
-	const nameError = document.getElementById("itemNameError")
-	const priceError = document.getElementById("itemPriceError")
-
-	const btnAddForm = document.getElementById("btnAddForm");
-	const btnPrint  = document.getElementById("btnPrint");
-	const btnRestart  = document.getElementById("btnRestart");
-	const cart = [];
+	// Declaracion de variables necesarias para el script
+	var itemList,addForm,itemName,itemPrice,itemAmount;
+	var payForm,formPayment;
+	var payment;
+	var formSelect,formCheckBox,nameError,priceError,btnAddForm,btnPrint,btnRestart,cart;
+	var expresiones;
 	
-
-
-
+	// Inicia las variables y los listeners al cargar la pagina
 	window.addEventListener("load", () => {
-		showItems()
-		btnPrint.disabled = true;
-		
-	});
-	
-	
-	formSelect.addEventListener("click", showPayment);
-	formCheckBox.addEventListener("change",checkAcept);
+		initValues();
+		showItems();
+		initListeners();
+	});//fin de load
 
 
-	//-----------------------------------
-	// Validacion de formulario
-
-	const expresiones = {
-
-		product: /^[a-zA-Z0-9\_\-]{1,16}$/, 
-		price: /^\d*(.\d{1})?\d{0,1}$/,
-		amount: /^[0-9]{1,3}$/,
-
-		name: /^[a-zA-Z0-9\_\-]{4,16}$/,
-		card: /^(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))$/,
-		cvv: /^[0-9]{3,4}$/
-
-	}
-
-	function validateAddForm() {
-		let flag = true;
-		let flag1 = true;
-		let flag2 = true;
-
-
-		if (itemName.value.length == 0) {
-			nameError.innerHTML = `<p>El nombre no puede estar vacio</p>`
-			document.getElementById("inputItemName").classList.add("form-incorrect")
-			flag1 = false;
-		}else if(!expresiones.product.test(itemName.value)){
-			nameError.innerHTML = `<p>El nombre no puede contener simbolos</p>`
-			document.getElementById("inputItemName").classList.add("form-incorrect")
-			flag1 = false;
-		}else{ 
-			nameError.innerHTML = `<p> </p>`
-			document.getElementById("inputItemName").classList.remove("form-incorrect")
-			flag1 = true;
-		}
-
-		if (itemPrice.value.length == 0) {
-			priceError.innerHTML = `<p>El precio no puede estar vacio</p>`
-			document.getElementById("inputItemPrice").classList.add("form-incorrect")
-			flag2 = false;
-		}else if(!expresiones.price.test(itemPrice.value)){
-			priceError.innerHTML = `<p>Formato de precio erroneo</p>`
-			document.getElementById("inputItemPrice").classList.add("form-incorrect")
-			flag2 = false;
-		}else{ 
-			priceError.innerHTML = `<p> </p>`
-			document.getElementById("inputItemPrice").classList.remove("form-incorrect")
-			flag2 = true;
-		}
-
-		if (flag1 == false || flag2 == false) {
-			flag = false;
-		}
-
-		return flag
-	  }
-
-	  /*
-	  function validateCardForm() {
-		let flag = true;
-		if (formSelect.value == "2"){
-			if (document.getElementById("cardName").value.length == 0) {
-				nameError.innerHTML = `<p>El nombre no puede estar vacio</p>`
-				document.getElementById("inputItemName").classList.add("form-incorrect")
-				flag1 = false;
-			}else if(!expresiones.name.test(document.getElementById("cardName").value)){
-				nameError.innerHTML = `<p>Nombre inapropiado</p>`
-				document.getElementById("inputItemName").classList.add("form-incorrect")
-				flag1 = false;
-			}else{ 
-				nameError.innerHTML = `<p> </p>`
-				document.getElementById("inputItemName").classList.remove("form-incorrect")
-				flag1 = true;
+	function initListeners() {
+		//-------------BOTONES--------------
+		//-----------------------------------
+		// Funcionalidad de boton añadir producto
+		btnAddForm.addEventListener("click", (e) => {
+			let flag = true;
+			flag = validateAddForm();
+			if( flag == true){
+				e.preventDefault();
+				const name = itemName.value;
+				const price = itemPrice.value;
+				const amount = itemAmount.value;
+				addItem(name, price, amount)
+			}else{
+				console.log("error")
+				return false;	
 			}
-		}else{
-			flag = true;
-		}
+			
+		});
 
-		return flag
-	  }
-	*/
-	//-------------BOTONES--------------
+		//-----------------------------------
+		// Funcionalidad de botones de la tabla para añadir o quitar productos
+		itemList.onclick = function (e) {
 
-	//-----------------------------------
-	// Funcionalidad de boton añadir producto
-	btnAddForm.addEventListener("click", (e) => {
-		let flag = true;
-		flag = validateAddForm();
-		if( flag == true){
-			e.preventDefault();
-			const name = itemName.value;
-			const price = itemPrice.value;
-			const amount = itemAmount.value;
-			addItem(name, price, amount)
-		}else{
-			console.log("error")
-			return false;	
+			// Elimina la linea de la tabla
+			if (e.target && e.target.classList.contains('remove')) {
+				const name = e.target.dataset.name
+				removeItem(name, -1)
+			}
+			// Aumenta en 1 la cantidad de esa linea de producto
+			else if (e.target && e.target.classList.contains('add-one')) {
+				const name = e.target.dataset.name
+				addItem(name,1, 1)
+			}
+			// Reduce en 1 la cantidad de esa linea de producto
+			else if (e.target && e.target.classList.contains('remove-one')) {
+				const name = e.target.dataset.name
+				removeItem(name,1,1)
+			}
 		}
 		
-	});
+		//-----------------------------------
+		// Funcionalidad de boton imprimir	
+		btnPrint.addEventListener('click', () => {   //ventana emergente al dar boton imprimir
 
-	//-----------------------------------
-	// Funcionalidad de botones de la tabla para añadir o quitar productos
-	itemList.onclick = function (e) {
+			let flag = true;
+			flag = validateCardForm();
+			if( flag == true){
+				alert(showResum());
+			}else{
+				console.log("error")
+				return false;	
+			}
+		});
 
-		// Elimina la linea de la tabla
-		if (e.target && e.target.classList.contains('remove')) {
-			const name = e.target.dataset.name
-			removeItem(name, -1)
-		}
-		// Aumenta en 1 la cantidad de esa linea de producto
-		else if (e.target && e.target.classList.contains('add-one')) {
-			const name = e.target.dataset.name
-			addItem(name,1, 1)
-		}
-		// Reduce en 1 la cantidad de esa linea de producto
-		else if (e.target && e.target.classList.contains('remove-one')) {
-			const name = e.target.dataset.name
-			removeItem(name,1,1)
-		}
-	}
+		//-----------------------------------
+		// Funcionalidad de boton imprimir	
+		btnRestart.addEventListener('click', restartAll);
+		formSelect.addEventListener("click", showPayment);
+		formCheckBox.addEventListener("change",checkAcept);
+	}// fin de initListeners
 	
-	//-----------------------------------
-	// Funcionalidad de boton imprimir	
-	btnPrint.addEventListener('click', () => {   //ventana emergente al dar boton imprimir
 
-		let flag = true;
-		flag = validateCardForm();
-		if( flag == true){
-			alert(showResum());
-		}else{
-			console.log("error")
-			return false;	
-		}
-	});
 
-	//-----------------------------------
-	// Funcionalidad de boton imprimir	
-	btnRestart.addEventListener('click', restartAll);
 
 	//-------------FUNCIONES--------------	
+	// Inicializa las variables que necesarias para el script
+	function initValues(){
+		itemList = document.getElementById("itemList");
+		addForm = document.getElementById("addForm");
+		itemName = document.getElementById("itemName");
+		itemPrice = document.getElementById("itemPrice");
+		itemAmount = document.getElementById("itemAmount");
+		payForm = document.getElementById("payForm");
+		formPayment = document.getElementById("formPayment");
+		payment = "unselect";
 
+		formSelect = document.getElementById("formSelect");
+		formCheckBox = document.getElementById("defaultCheck1");
+		nameError = document.getElementById("itemNameError")
+		priceError = document.getElementById("itemPriceError")
+
+		btnAddForm = document.getElementById("btnAddForm");
+		btnPrint  = document.getElementById("btnPrint");
+		btnPrint.disabled = true;
+		btnRestart  = document.getElementById("btnRestart");
+		cart = [];
+
+		expresiones = {
+
+			product: /^[a-zA-Z0-9\_\-]{1,16}$/, 
+			price: /^\d*(.\d{1})?\d{0,1}$/,
+			amount: /^[0-9]{1,3}$/,
+	
+			name: /^[a-zA-Z0-9\_\-]{4,16}$/,
+			card: /^(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))$/,
+			cvv: /^[0-9]{3,4}$/
+	
+		}
+	}
 	// Añade un articulo al carito
 	function addItem(name, price, amount){
 		// Recorre el array
@@ -409,6 +347,74 @@
 					break;
 			}		  
 	}
+	
+	//-----------------------------------
+	// Validacion de formulario
+	function validateAddForm() {
+		let flag = true;
+		let flag1 = true;
+		let flag2 = true;
+
+
+		if (itemName.value.length == 0) {
+			nameError.innerHTML = `<p>El nombre no puede estar vacio</p>`
+			document.getElementById("inputItemName").classList.add("form-incorrect")
+			flag1 = false;
+		}else if(!expresiones.product.test(itemName.value)){
+			nameError.innerHTML = `<p>El nombre no puede contener simbolos</p>`
+			document.getElementById("inputItemName").classList.add("form-incorrect")
+			flag1 = false;
+		}else{ 
+			nameError.innerHTML = `<p> </p>`
+			document.getElementById("inputItemName").classList.remove("form-incorrect")
+			flag1 = true;
+		}
+
+		if (itemPrice.value.length == 0) {
+			priceError.innerHTML = `<p>El precio no puede estar vacio</p>`
+			document.getElementById("inputItemPrice").classList.add("form-incorrect")
+			flag2 = false;
+		}else if(!expresiones.price.test(itemPrice.value)){
+			priceError.innerHTML = `<p>Formato de precio erroneo</p>`
+			document.getElementById("inputItemPrice").classList.add("form-incorrect")
+			flag2 = false;
+		}else{ 
+			priceError.innerHTML = `<p> </p>`
+			document.getElementById("inputItemPrice").classList.remove("form-incorrect")
+			flag2 = true;
+		}
+
+		if (flag1 == false || flag2 == false) {
+			flag = false;
+		}
+
+		return flag
+	  }
+
+	  /*
+	  function validateCardForm() {
+		let flag = true;
+		if (formSelect.value == "2"){
+			if (document.getElementById("cardName").value.length == 0) {
+				nameError.innerHTML = `<p>El nombre no puede estar vacio</p>`
+				document.getElementById("inputItemName").classList.add("form-incorrect")
+				flag1 = false;
+			}else if(!expresiones.name.test(document.getElementById("cardName").value)){
+				nameError.innerHTML = `<p>Nombre inapropiado</p>`
+				document.getElementById("inputItemName").classList.add("form-incorrect")
+				flag1 = false;
+			}else{ 
+				nameError.innerHTML = `<p> </p>`
+				document.getElementById("inputItemName").classList.remove("form-incorrect")
+				flag1 = true;
+			}
+		}else{
+			flag = true;
+		}
+
+		return flag
+	  }
+	*/
 
 	//-----------------------------------
 	// Comprueba si el check box esta activado
