@@ -7,6 +7,7 @@
 	const itemAmount = document.getElementById("itemAmount");
 
 	const payForm = document.getElementById("payForm");
+	const formPayment = document.getElementById("formPayment");
 	var payment = "unselect";
 
 	const formSelect = document.getElementById("formSelect");
@@ -38,7 +39,7 @@
 
 	const expresiones = {
 
-		product: /^[a-zA-Z0-9\_\-]{4,16}$/, 
+		product: /^[a-zA-Z0-9\_\-]{1,16}$/, 
 		price: /^\d*(.\d{1})?\d{0,1}$/,
 		amount: /^[0-9]{1,3}$/,
 
@@ -48,7 +49,7 @@
 
 	}
 
-	function validateForm() {
+	function validateAddForm() {
 		let flag = true;
 		let flag1 = true;
 		let flag2 = true;
@@ -89,15 +90,37 @@
 		return flag
 	  }
 
+	  /*
+	  function validateCardForm() {
+		let flag = true;
+		if (formSelect.value == "2"){
+			if (document.getElementById("cardName").value.length == 0) {
+				nameError.innerHTML = `<p>El nombre no puede estar vacio</p>`
+				document.getElementById("inputItemName").classList.add("form-incorrect")
+				flag1 = false;
+			}else if(!expresiones.name.test(document.getElementById("cardName").value)){
+				nameError.innerHTML = `<p>Nombre inapropiado</p>`
+				document.getElementById("inputItemName").classList.add("form-incorrect")
+				flag1 = false;
+			}else{ 
+				nameError.innerHTML = `<p> </p>`
+				document.getElementById("inputItemName").classList.remove("form-incorrect")
+				flag1 = true;
+			}
+		}else{
+			flag = true;
+		}
 
-
+		return flag
+	  }
+	*/
 	//-------------BOTONES--------------
 
 	//-----------------------------------
 	// Funcionalidad de boton añadir producto
 	btnAddForm.addEventListener("click", (e) => {
 		let flag = true;
-		flag = validateForm();
+		flag = validateAddForm();
 		if( flag == true){
 			e.preventDefault();
 			const name = itemName.value;
@@ -135,7 +158,15 @@
 	//-----------------------------------
 	// Funcionalidad de boton imprimir	
 	btnPrint.addEventListener('click', () => {   //ventana emergente al dar boton imprimir
-		alert(showResum());
+
+		let flag = true;
+		flag = validateCardForm();
+		if( flag == true){
+			alert(showResum());
+		}else{
+			console.log("error")
+			return false;	
+		}
 	});
 
 	//-----------------------------------
@@ -187,7 +218,12 @@
 	//-----------------------------------
 	//Resetea los formularios y el carrito
 	function restartAll(){
-		console.log("borrado todo");
+		console.log("resetear")
+		cart.splice(0, cart.length);
+		showItems();
+		formSelect.value = 0;
+		showPayment()
+
 	}
 
 	//-----------------------------------
@@ -259,6 +295,7 @@
 		itemList.innerHTML = itemStr;
 		// Focus en el nombre del articulo del formulario
 		itemName.focus()
+		showPayment()
 		// Resetea el formulario
 		addForm.reset()
 	}
@@ -330,10 +367,13 @@
 				case "1":
 					itemStr += 
 					`<!-- Importe efectivo -->
+					<fieldset disabled>
 					<label for="cash-amount" class="form-label">Importe efectivo</label>
 					<div class="mb-3">
-						<input type="text" name="cash-amount" id="cash-Amount" class="form-control">
-					</div>`
+						<input type="text" name="cash-amount" id="cash-Amount" class="form-control " placeholder="${getTotal()} €">
+					</div>
+					</fieldset>`
+
 					payForm.innerHTML = itemStr;
 					payment = "Efectivo"
 					break;
@@ -344,18 +384,21 @@
 					<div class="mb-3">
 						<input type="text" name="card-name" id="cardName" class="form-control">
 					</div>
+					<div class="text-error" id="itemPriceError"></div>
 
 					<!-- Numero de tarjeta -->
 					<label for="card-num" class="form-label">Numero de tarjeta </label>
 					<div class="input-group mb-3">
 						<input type="text" name="card-num" id="cardNum" class="form-control">
 					</div>
+					<div class="text-error" id="itemPriceError"></div>
 
 					<!-- CVV -->
 					<label for="card-cvv" class="form-label">CVV </label>
-					<div class="input-group mb-3">
+					<div class="input-group mb-3" id="imputCardCvv">
 						<input type="text" name="card-cvv" id="cardCvv" class="form-control">
-					</div>`
+					</div>
+					<div class="text-error" id="cvvError"></div>`
 					payForm.innerHTML = itemStr;
 					payment = "Tarjeta"
 					break;
