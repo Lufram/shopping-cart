@@ -39,18 +39,18 @@
 
 			// Elimina la linea de la tabla
 			if (e.target && e.target.classList.contains('remove')) {
-				const name = e.target.dataset.name
-				removeItem(name, -1)
+				const name = e.target.dataset.name;
+				removeItem(name, -1);
 			}
 			// Aumenta en 1 la cantidad de esa linea de producto
 			else if (e.target && e.target.classList.contains('add-one')) {
-				const name = e.target.dataset.name
-				addItem(name,1, 1)
+				const name = e.target.dataset.name;
+				addItem(name,1, 1);
 			}
 			// Reduce en 1 la cantidad de esa linea de producto
 			else if (e.target && e.target.classList.contains('remove-one')) {
-				const name = e.target.dataset.name
-				removeItem(name,1,1)
+				const name = e.target.dataset.name;
+				removeItem(name,1,1);
 			}
 		}
 		
@@ -101,7 +101,7 @@
 	
 			name: /^[a-zA-Z0-9\_\-]{4,16}$/,
 			card: /^(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))$/,
-			cvv: /^[0-9]{3,4}$/
+			cvv: /^[0-9]{3,4}$/;
 	
 		}
 	}
@@ -112,17 +112,17 @@
 			/* Compara el nombre intruducido con cada nombre en el array
 			si coincide aumenta la cantidad introducida al articulo existente */
 			if (cart[i].name === name) {
-				cart[i].amount =  parseFloat(cart[i].amount) +  parseFloat(amount)
+				cart[i].amount =  parseFloat(cart[i].amount) +  parseFloat(amount);
 				/* Sale de la funcion para no ejecutar el codigo a continuacion 
 				y no duplicar el producto */
-				showItems()
+				showItems();
 				return true
 			}
 		}
 		let item = new Item (name, price, amount);
 		// Añade objeto item al array
 		cart.push(item);
-		showItems()
+		showItems();
 
 	}
 
@@ -136,23 +136,23 @@
 				cart[i].amount =  parseFloat(cart[i].amount) -  parseFloat(amount)
 				//Si la cantidad es menor que 1 elimina el articulo del array
 				if (cart[i].amount < 1 || amount === -1){
-					cart.splice( i , 1)
+					cart.splice( i , 1);
 				}
-				showItems()
+				showItems();
 				return
 			}
 		}
-		showItems()
+		showItems();
 	}
 
 	//-----------------------------------
 	//Resetea los formularios y el carrito
 	function restartAll(){
-		console.log("resetear")
+		console.log("resetear");
 		cart.splice(0, cart.length);
 		showItems();
 		formSelect.value = 0;
-		showPayment()
+		showPayment();
 
 	}
 
@@ -161,9 +161,9 @@
 	function showItems(){
 		
 		// Genera el total de articulos actual
-		let totalAmount = getAmount()
+		let totalAmount = getAmount();
 		// Variable donde concatenar todo el codigo html que insertaremos
-		let itemStr = ``
+		let itemStr = ``;
 		// En caso de que el carrito este vacio mostramos una imagen y un texto
 		if (cart.length < 1){
 			itemStr =
@@ -172,12 +172,12 @@
 					<div class="cart-empty-img-container">
 						<img class="cart-empty-img" src="_img/cart_empty.svg">
 					</div>
-			</div>`
+			</div>`;
 		}else{
 
 			// Muestra la cantidad de productos en el carrito
 			console.log(`Tiene ${totalAmount} productos en el carrito`)
-			itemStr += `<p class="cart-amount"> Tiene ${totalAmount} productos en el carrito</p>`
+			itemStr += `<p class="cart-amount"> Tiene ${totalAmount} productos en el carrito</p>`;
 			
 			itemStr += 
 						`<table class="table">
@@ -191,11 +191,11 @@
 									<th scope="col"></th>
 								</tr>
 							</thead>
-						<tbody>`
+						<tbody>`;
 		
 			// Muestra cada producto y sus datos
 		    for (let i = 0 ; i < cart.length; i += 1) {
-		        let totalPrice = cart[i].getTotal(i)
+		        let totalPrice = cart[i].getTotal(i);
 		        console.log(`- ${cart[i].name} ${cart[i].price} € x ${cart[i].amount} = ${totalPrice}`)
 		        itemStr += `<tr class="item">
 						    	<th scope="row"> ${i+1} </th>
@@ -208,7 +208,7 @@
 						    		<button class="remove-one" data-name="${cart[i].name}">-</button>
 						    		<button class="remove" data-name="${cart[i].name}">eliminar</button>
 						    	</td>
-						     </tr>`
+						     </tr>`;
 
 		    }
 			// Muestra el importe total del carrito
@@ -219,47 +219,47 @@
 						</tr>`
 			
 			itemStr += `</tbody>
-						</table>`
+						</table>`;
 		}
 		// Inserta el String en el html
 		itemList.innerHTML = itemStr;
 		// Focus en el nombre del articulo del formulario
-		itemName.focus()
-		showPayment()
+		itemName.focus();
+		showPayment();
 		// Resetea el formulario
-		addForm.reset()
+		addForm.reset();
 	}
 
 	//-----------------------------------
 	// Muestra los productos en el carrito el precio total y la forma de pago
 	function showResum(){
 		// Variable donde concatenar todo el codigo html que insertaremos
-		let itemStr = ``
+		let itemStr = ``;
 		// En caso de que el carrito este vacio mostramos una imagen y un texto
 			if (cart.length < 1){
 				itemStr =
-				`No tienes ningun artículo en el carrito, añada algún producto ...`
+				`No tienes ningun artículo en el carrito, añada algún producto ...`;
 			}else if (payment =="unselect"){
 			
-					itemStr += `No ha seleccionado ninguna forma de pago.`}
-					else{
+					itemStr += `No ha seleccionado ninguna forma de pago.`;
+					} else {
 						// Muestra la cantidad de productos en el carrito
-						itemStr += `Los articulos de mi carrito son: \n`
+						itemStr += `Los articulos de mi carrito son: \n`;
 						// Muestra cada producto y sus datos
 						for (let i = 0 ; i < cart.length; i += 1) {
-							let totalPrice = cart[i].getTotal(i)
+							let totalPrice = cart[i].getTotal(i);
 
-							itemStr += `-- ${cart[i].name}`
+							itemStr += `-- ${cart[i].name}`;
 						}
 						// Muestra el importe total del carrito
 						itemStr += `\n Importe total ${getTotal()} €`
 
 						switch (payment){
 							case "Efectivo":
-								itemStr += `\nforma de pago Efectivo`
+								itemStr += `\nforma de pago Efectivo`;
 								break;
 							case "Tarjeta":
-						 		itemStr += `\nforma de pago Tarjeta`
+						 		itemStr += `\nforma de pago Tarjeta`;
 								break;
 						}
 					}
@@ -271,21 +271,21 @@
 	//-----------------------------------
 	// Devuelve cantiad total de articulos en el carrito 
 	function getAmount(){
-		let amount = 0
+		let amount = 0;
 		for (let i = 0 ; i < cart.length ; i += 1) {
-			amount += parseFloat(cart[i].amount)
+			amount += parseFloat(cart[i].amount);
 		}
-		return amount
+		return amount;
 	}
 
 	//-----------------------------------
 	// Devuelve importe total del carrito 
 	function getTotal() {
-        let total = 0
+        let total = 0;
         for (let i = 0; i < cart.length ; i += 1) {
-          total += cart[i].price * cart[i].amount
+          total += cart[i].price * cart[i].amount;
         }
-        return total.toFixed(2)
+        return total.toFixed(2);
       }
 
 	//-----------------------------------
@@ -302,10 +302,10 @@
 					<div class="mb-3">
 						<input type="text" name="cash-amount" id="cash-Amount" class="form-control " placeholder="${getTotal()} €">
 					</div>
-					</fieldset>`
+					</fieldset>`;
 
 					payForm.innerHTML = itemStr;
-					payment = "Efectivo"
+					payment = "Efectivo";
 					break;
 				case "2":
 					itemStr += 
@@ -328,13 +328,13 @@
 					<div class="input-group mb-3" id="imputCardCvv">
 						<input type="text" name="card-cvv" id="cardCvv" class="form-control">
 					</div>
-					<div class="text-error" id="cvvError"></div>`
+					<div class="text-error" id="cvvError"></div>`;
 					payForm.innerHTML = itemStr;
-					payment = "Tarjeta"
+					payment = "Tarjeta";
 					break;
 				default:
-					itemStr += "<div></div>"
-					payment = "unselect"
+					itemStr += "<div></div>";
+					payment = "unselect";
 					payForm.innerHTML = itemStr;
 					break;
 			}		  
@@ -349,26 +349,30 @@
 
 
 		if (itemName.value.length == 0) {
-			nameError.innerHTML = `<p>El nombre no puede estar vacio</p>`
-			document.getElementById("inputItemName").classList.add("form-incorrect")
+			nameError.innerHTML = `<p>El nombre no puede estar vacio</p>`;
+			document.getElementById("inputItemName").classList.add("form-incorrect");
+			itemName.focus();
 			flag1 = false;
 		}else if(!expresiones.product.test(itemName.value)){
-			nameError.innerHTML = `<p>El nombre no puede contener simbolos</p>`
-			document.getElementById("inputItemName").classList.add("form-incorrect")
+			nameError.innerHTML = `<p>El nombre no puede contener simbolos</p>`;
+			document.getElementById("inputItemName").classList.add("form-incorrect");
+			itemName.focus();
 			flag1 = false;
 		}else{ 
-			nameError.innerHTML = `<p> </p>`
-			document.getElementById("inputItemName").classList.remove("form-incorrect")
+			nameError.innerHTML = `<p> </p>`;
+			document.getElementById("inputItemName").classList.remove("form-incorrect");
 			flag1 = true;
 		}
 
 		if (itemPrice.value.length == 0) {
-			priceError.innerHTML = `<p>El precio no puede estar vacio</p>`
-			document.getElementById("inputItemPrice").classList.add("form-incorrect")
+			priceError.innerHTML = `<p>El precio no puede estar vacio</p>`;
+			document.getElementById("inputItemPrice").classList.add("form-incorrect");
+			itemPrice.focus();
 			flag2 = false;
 		}else if(!expresiones.price.test(itemPrice.value)){
-			priceError.innerHTML = `<p>Formato de precio erroneo</p>`
-			document.getElementById("inputItemPrice").classList.add("form-incorrect")
+			priceError.innerHTML = `<p>Formato de precio erroneo</p>`;
+			document.getElementById("inputItemPrice").classList.add("form-incorrect");
+			itemPrice.focus();
 			flag2 = false;
 		}else{ 
 			priceError.innerHTML = `<p> </p>`
@@ -411,11 +415,11 @@ class Item {
 	// Devuelve el importe total de la linea de articulo
 	getTotal(i){
 		// Variable interna
-		let total = 0
+		let total = 0;
 		// Multiplica el precio por la cantidad
-		total += cart[i].amount * cart[i].price
+		total += cart[i].amount * cart[i].price;
 
-		return total.toFixed(2)
+		return total.toFixed(2);
 	}
 
 }
