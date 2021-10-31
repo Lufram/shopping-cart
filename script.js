@@ -101,7 +101,7 @@
 	
 			name: /^[a-zA-Z0-9\_\-]{4,16}$/,
 			card: /^(?:(4[0-9]{12}(?:[0-9]{3})?)|(5[1-5][0-9]{14})|(6(?:011|5[0-9]{2})[0-9]{12})|(3[47][0-9]{13})|(3(?:0[0-5]|[68][0-9])[0-9]{11})|((?:2131|1800|35[0-9]{3})[0-9]{11}))$/,
-			cvv: /^[0-9]{3,4}$/;
+			cvv: /^[0-9]{3,4}$/
 	
 		}
 	}
@@ -348,6 +348,22 @@
 		let flag2 = true;
 
 
+		if (itemPrice.value.length == 0) {
+			priceError.innerHTML = `<p>El precio no puede estar vacio</p>`;
+			document.getElementById("inputItemPrice").classList.add("form-incorrect");
+			itemPrice.focus();
+			flag2 = false;
+		}else if(!expresiones.price.test(itemPrice.value)){
+			priceError.innerHTML = `<p>Formato de precio erroneo</p>`;
+			document.getElementById("inputItemPrice").classList.add("form-incorrect");
+			itemPrice.focus();
+			flag2 = false;
+		}else{ 
+			priceError.innerHTML = `<p> </p>`
+			document.getElementById("inputItemPrice").classList.remove("form-incorrect")
+			flag2 = true;
+		}
+
 		if (itemName.value.length == 0) {
 			nameError.innerHTML = `<p>El nombre no puede estar vacio</p>`;
 			document.getElementById("inputItemName").classList.add("form-incorrect");
@@ -364,21 +380,7 @@
 			flag1 = true;
 		}
 
-		if (itemPrice.value.length == 0) {
-			priceError.innerHTML = `<p>El precio no puede estar vacio</p>`;
-			document.getElementById("inputItemPrice").classList.add("form-incorrect");
-			itemPrice.focus();
-			flag2 = false;
-		}else if(!expresiones.price.test(itemPrice.value)){
-			priceError.innerHTML = `<p>Formato de precio erroneo</p>`;
-			document.getElementById("inputItemPrice").classList.add("form-incorrect");
-			itemPrice.focus();
-			flag2 = false;
-		}else{ 
-			priceError.innerHTML = `<p> </p>`
-			document.getElementById("inputItemPrice").classList.remove("form-incorrect")
-			flag2 = true;
-		}
+	
 
 		if (flag1 == false || flag2 == false) {
 			flag = false;
